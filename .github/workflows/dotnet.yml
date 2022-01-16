@@ -86,4 +86,4 @@ jobs:
     - name: Pack
       run: dotnet pack --configuration Release /p:Version=${{github.ref_name}} --no-build --output .
     - name: Push
-      run: dotnet nuget push Orchesflow.${{github.ref_name}}.nupkg --source ${{ secrets.NUGET_REPO }} --api-key ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget push Orchesflow.${{github.ref_name}}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_KEY }}
