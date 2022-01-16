@@ -78,3 +78,12 @@ AfterCommitEvents are MediatR events (`INotification`) that will be triggered af
 #### DomainNotifications container
 This container intention is to store any errors that occurs during the request lifecycle and provide easy access to them from any part of your code. It is important to note that Commit action, AfterCommitEvents and the flow return depends if there is or there is not messages at DomainNotifications container. This funcionality should be used whenever you want to prevent the Commit to happen or prevent AfterCommitEvents to be triggered.
 
+##### Available methods for IDomainNotifications interface
+`AddNotification(string notification)` => Adds a new notification to container
+
+`void CleanNotifications()` => Remove all notifications from container
+
+`List<string> GetAll()` => Returns a list with all notifications
+
+`HasNotifications()` => Returns true if any notifications is found at container or false if not 
+
