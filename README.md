@@ -2,6 +2,8 @@
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=andresantarosa_Orchesflow&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=andresantarosa_Orchesflow)
 
+Available at [Nuget](https://www.nuget.org/packages/Orchesflow/)
+
 This package provides some extra tools to be used along MediatR + EntityFramework focused to make working with events easier.
 
 #### Ochestrator flow:
