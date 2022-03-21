@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Orchesflow.Tests.Fakes
+namespace Orchesflow.Tests.Unit.Fakes
 {
     public class FakeRequest: IRequest<FakeResponse>
     {

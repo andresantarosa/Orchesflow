@@ -1,16 +1,16 @@
-﻿using EntityFrameworkCoreMock;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using EntityFrameworkCoreMock;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.AutoMock;
 using Orchesflow.Notifications;
 using Orchesflow.UnitOfWork;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace Orchesflow.Tests
+namespace Orchesflow.Tests.Unit
 {
     public class UnitOfWorkTests
     {
