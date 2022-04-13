@@ -1,15 +1,17 @@
-﻿using FluentAssertions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
 using MediatR;
 using Moq;
 using Moq.AutoMock;
 using Orchesflow.Events;
-using Orchesflow.Tests.Fakes;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+using Orchesflow.Tests.Unit.Fakes;
 using Xunit;
 
-namespace Orchesflow.Tests
+namespace Orchesflow.Tests.Unit
 {
     public class EventDispatcherTests
     {
@@ -54,6 +56,9 @@ namespace Orchesflow.Tests
         public async Task FirePreCommitEvent_ShouldFirePreCommitEvent_WithNoErrors()
         {
             // Arrange
+            _mocker.GetMock<IServiceProvider>()
+                .Setup(x => x.GetService(It.IsAny<Type>()))
+                .Returns(new List<INotification>());
             var eventDispatcher = _mocker.CreateInstance<EventDispatcher>();
             var notification1 = new FakeNotification(1, "event1");
             var notification2 = new FakeNotification(2, "event2");
@@ -109,6 +114,9 @@ namespace Orchesflow.Tests
         public async Task FireAfterCommitEvent_ShouldFireAfterCommitEvent_WithNoErrors()
         {
             // Arrange
+            _mocker.GetMock<IServiceProvider>()
+                .Setup(x => x.GetService(It.IsAny<Type>()))
+                .Returns(new List<INotification>());
             var eventDispatcher = _mocker.CreateInstance<EventDispatcher>();
             var notification1 = new FakeNotification(1, "event1");
             var notification2 = new FakeNotification(2, "event2");

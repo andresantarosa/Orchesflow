@@ -1,4 +1,4 @@
-﻿namespace Orchesflow.Tests.Fakes
+﻿namespace Orchesflow.Tests.Unit.Fakes
 {
     public class FakeResponse
     {

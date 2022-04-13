@@ -1,22 +1,23 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using FluentAssertions;
 using MediatR;
 using Moq;
 using Moq.AutoMock;
 using Orchesflow.Events;
 using Orchesflow.Notifications;
 using Orchesflow.Orchestration;
-using Orchesflow.Tests.Fakes;
+using Orchesflow.Tests.Unit.Fakes;
 using Orchesflow.UnitOfWork;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace Orchesflow.Tests
+namespace Orchesflow.Tests.Unit
 {
     public class OrchestratorTests
     {
         private readonly AutoMocker _mocker;
+
         public OrchestratorTests()
         {
             _mocker = new AutoMocker();
@@ -28,7 +29,7 @@ namespace Orchesflow.Tests
             // Arrange
             var request = new FakeRequest();
             var orchestrator = _mocker.CreateInstance<Orchestrator<FakeDbContext>>();
-            var errors = new List<string> { "Generic error 1", "Generic error 2" };
+            var errors = new List<string> {"Generic error 1", "Generic error 2"};
 
             _mocker.GetMock<IDomainNotifications>()
                 .Setup(x => x.HasNotifications())
@@ -39,7 +40,7 @@ namespace Orchesflow.Tests
                 .Returns(errors);
 
             // Act
-            var sut = await orchestrator.SendCommand(request);
+            var sut = await orchestrator.SendCommand<FakeRequest, FakeResponse>(request);
 
             // Assert
             sut.Data.Should().BeNull();
@@ -57,7 +58,7 @@ namespace Orchesflow.Tests
             // Arrange
             var request = new FakeRequest();
             var orchestrator = _mocker.CreateInstance<Orchestrator<FakeDbContext>>();
-            var errors = new List<string> { "Failed to record" };
+            var errors = new List<string> {"Failed to record"};
 
             _mocker.GetMock<IDomainNotifications>()
                 .Setup(x => x.HasNotifications())
@@ -72,7 +73,7 @@ namespace Orchesflow.Tests
                 .Returns(errors);
 
             // Act
-            var sut = await orchestrator.SendCommand(request);
+            var sut = await orchestrator.SendCommand<FakeRequest, FakeResponse>(request);
 
             // Assert
             sut.Data.Should().BeNull();
@@ -109,7 +110,7 @@ namespace Orchesflow.Tests
                 .ReturnsAsync(response);
 
             // Act
-            var sut = await orchestrator.SendCommand(request);
+            var sut = await orchestrator.SendCommand<FakeRequest, FakeResponse>(request);
 
             // Assert
             sut.Data.Should().BeEquivalentTo(response);
@@ -127,7 +128,7 @@ namespace Orchesflow.Tests
             // Arrange
             var request = new FakeRequest();
             var orchestrator = _mocker.CreateInstance<Orchestrator<FakeDbContext>>();
-            var errors = new List<string> { "Generic error 1", "Generic error 2" };
+            var errors = new List<string> {"Generic error 1", "Generic error 2"};
 
             _mocker.GetMock<IDomainNotifications>()
                 .Setup(x => x.HasNotifications())

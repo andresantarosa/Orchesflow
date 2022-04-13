@@ -9,7 +9,7 @@ namespace Orchesflow
 {
     public static class Initialize
     {
-        public static IServiceCollection AddOchesflow<TDbContext>(this IServiceCollection serviceCollection) where TDbContext : DbContext
+        public static IServiceCollection AddOrchesflow<TDbContext>(this IServiceCollection serviceCollection) where TDbContext : DbContext
         {
             serviceCollection.AddScoped<IEventDispatcher, EventDispatcher>();
             serviceCollection.AddScoped<IOrchestrator, Orchestrator<TDbContext>>();

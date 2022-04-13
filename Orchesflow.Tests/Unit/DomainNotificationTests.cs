@@ -3,7 +3,7 @@ using Moq.AutoMock;
 using Orchesflow.Notifications;
 using Xunit;
 
-namespace Orchesflow.Tests
+namespace Orchesflow.Tests.Unit
 {
     public class DomainNotificationTests
     {

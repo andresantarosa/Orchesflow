@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace Orchesflow.Tests.Fakes
+namespace Orchesflow.Tests.Unit.Fakes
 {
     public class FakeDbContext : DbContext
     {
