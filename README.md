@@ -10,7 +10,7 @@ This package provides some extra tools to be used along MediatR + EntityFramewor
 To enable Orchesflow just add it to your `ConfigureServices()` method at `Startup.cs`
 
     services.AddOrchesflow<YourDbContext>();
-    
+
 #### Sending a Command or Query
 
     using Orchesflow.Orchestration
@@ -38,23 +38,46 @@ To enable Orchesflow just add it to your `ConfigureServices()` method at `Startu
        }
     }
 
+#### EventDispatcher
 ### EventDispatcher
 The event dispatcher is the responsible to dispatch PreCommitEvents and AfterCommitEvents. This interface (`IEventDispatcher`) provides methods to add, remove, list or manualy event trigger (not recommended).
+The event dispatcher is the responsible to dispatch PreCommitEvents and AfterCommitEvents. This interface (`IEventDispatcher`) provides methods to add, remove, list or manualy event trigger (not recommended).
+##### Available methods for PreCommitEvents
 ##### Available methods
 `GetPreCommitEvent(INotification evt)` => Returns a list with all PreCommitEvent
+
+`GetPreCommitEvent(INotification evt)` => Returns a list with all PreCommitEvent
+
 `AddPreCommitEvent(INotification evt)` => Adds new PreCommitEvent
+
+`AddPreCommitEvent(INotification evt)` => Adds new PreCommitEvent
+
+`RemovePreCommitEvent(INotification evt)` => Remove an existing PreCommitEvent
+
 `RemovePreCommitEvent(INotification evt)` => Remove an existing PreCommitEvent
 `FirePreCommitEvents(INotification evt)` => Manualy fire PreCommitEvent (not recommended)
 
+`FirePreCommitEvents(INotification evt)` => Manualy fire PreCommitEvent (not recommended)
+####  
+##### Available methods for PreCommitEvents
 `GetAfterCommitEvent(INotification evt)` => Returns a list with all AfterCommitEvent
+
+`GetAfterCommitEvent(INotification evt)` => Returns a list with all AfterCommitEvent
+
 `AddAfterCommitEvent(INotification evt)` => Adds new AfterCommitEvent
+
+`AddAfterCommitEvent(INotification evt)` => Adds new AfterCommitEvent
+
 `RemoveAfterCommitEvent(INotification evt)` => Remove an existing AfterCommitEvent
+
+`RemoveAfterCommitEvent(INotification evt)` => Remove an existing AfterCommitEvent
+
 `FireAfterCommitEvents(INotification evt)` => Manualy fire AfterCommitEvent (not recommended)
 
-The EventDispatcher functionality is only available when usind `SendCommand()`
+The EventDispatcher functionality is only available when using `SendCommand()`
 
 #### Commit
-The `SaveChanges()` method is called whenever the MediatR CommandHandler finishes its job, unless if any notification is found at the DomainNotifications container.
+`SaveChanges()` method is called whenever MediatR CommandHandler finishes its job, unless any notification is found at the DomainNotifications container.
 The Commit will only be evoked when using `SendCommand()`
 
 #### PreCommitEvents
@@ -66,6 +89,12 @@ AfterCommitEvents are MediatR events (`INotification`) that will be triggered af
 
 #### DomainNotifications container
 This container intention is to store any errors that occurs during the request lifecycle and provide easy access to them from any part of your code. It is important to note that Commit action, AfterCommitEvents and the flow return depends if there is or there is not messages at DomainNotifications container. This funcionality should be used whenever you want to prevent the Commit to happen or prevent AfterCommitEvents to be triggered.
+
+##### Available methods for IDomainNotifications interface
+
+`AddNotification(string notification)` => Adds a new notification to container
+
+`void CleanNotifications()` => Remove all notifications from container
 
 ### Fallbacks
 
