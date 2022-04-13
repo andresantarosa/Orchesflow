@@ -23,7 +23,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(keepAliveConnection);
 });
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
-builder.Services.AddOchesflow<ApplicationDbContext>();
+builder.Services.AddOrchesflow<ApplicationDbContext>();
 
 
 var app = builder.Build();
@@ -33,6 +33,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+        context.Database.EnsureCreated();
+    }
 }
 
 app.UseHttpsRedirection();
@@ -42,5 +47,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
 
 public partial class Program { }

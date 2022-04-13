@@ -9,7 +9,7 @@ This package provides some extra tools to be used along MediatR + EntityFramewor
 ### Using Ochesflow
 To enable Orchesflow just add it to your `ConfigureServices()` method at `Startup.cs`
 
-    services.AddOchesflow<YourDbContext>();
+    services.AddOrchesflow<YourDbContext>();
     
 #### Sending a Command or Query
 
@@ -38,7 +38,7 @@ To enable Orchesflow just add it to your `ConfigureServices()` method at `Startu
        }
     }
 
-#### EventDispatcher
+### EventDispatcher
 The event dispatcher is the responsible to dispatch PreCommitEvents and AfterCommitEvents. This interface (`IEventDispatcher`) provides methods to add, remove, list or manualy event trigger (not recommended).
 ##### Available methods
 `GetPreCommitEvent(INotification evt)` => Returns a list with all PreCommitEvent
@@ -67,3 +67,15 @@ AfterCommitEvents are MediatR events (`INotification`) that will be triggered af
 #### DomainNotifications container
 This container intention is to store any errors that occurs during the request lifecycle and provide easy access to them from any part of your code. It is important to note that Commit action, AfterCommitEvents and the flow return depends if there is or there is not messages at DomainNotifications container. This funcionality should be used whenever you want to prevent the Commit to happen or prevent AfterCommitEvents to be triggered.
 
+### Fallbacks
+
+Sometimes things just go wrong, in this case you can use fallbacks to go back and undo what you did.
+To enable fallbacks, implement the interface `IFallbackable` at your RequestHandler or Notification Handler and put your logic inside `Fallback()` method.
+
+There are three key moments for fallbacks.
+
+- **An error occurred during a PreCommitEvent**: All PreCommitEvents already executed will have its fallback method called in the reverse order they were executed
+
+- **An error occurred during Commit phase:** The calling handler will have its `Fallback` method triggered and also all PreCommitEvents executed will have its fallback method called in the reverse order they were executed
+
+- **An error occurred during a AfterCommitEvent:** All PreCommitEvents already executed will have its `Fallback` method triggered, Handler fallback and PreCommitEvents fallbacks will also be triggered in the reverse worder they were executed.

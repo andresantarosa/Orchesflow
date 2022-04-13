@@ -28,7 +28,7 @@ public class FallbackTests : Fixture
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
             TestExecutionVerify.Executions.Count.Should().Be(2);
             TestExecutionVerify.Executions.First().Should().Be(("AddCustomerDummyPreEvent1Handler", true));
-            TestExecutionVerify.Executions.Skip(1).First().Should().Be(("AddCustomerDummyPreEvent1Handler", false));
+            TestExecutionVerify.Executions.Skip(1).First().Should().Be(("AddCustomerDummyPreEvent1HandlerFallback", false));
         }
         finally
         {
@@ -56,8 +56,8 @@ public class FallbackTests : Fixture
             TestExecutionVerify.Executions.First().Should().Be(("AddCustomerDummyPreEvent1Handler", true));
             TestExecutionVerify.Executions.Skip(1).First().Should().Be(("AddCustomerDummyPreEvent2Handler", true));
             TestExecutionVerify.Executions.Skip(2).First().Should().Be(("AddCustomerDummyPreEvent3Handler", true));
-            TestExecutionVerify.Executions.Skip(3).First().Should().Be(("AddCustomerDummyPreEvent1Handler", false));
-            TestExecutionVerify.Executions.Skip(4).First().Should().Be(("AddCustomerDummyPreEvent2Handler", false));
+            TestExecutionVerify.Executions.Skip(3).First().Should().Be(("AddCustomerDummyPreEvent2HandlerFallback", false));
+            TestExecutionVerify.Executions.Skip(4).First().Should().Be(("AddCustomerDummyPreEvent1HandlerFallback", false));
 
         }
         finally
@@ -87,10 +87,11 @@ public class FallbackTests : Fixture
             TestExecutionVerify.Executions.Skip(1).First().Should().Be(("AddCustomerDummyPreEvent2Handler", true));
             TestExecutionVerify.Executions.Skip(2).First().Should().Be(("AddCustomerDummyPreEvent3Handler", true));
             TestExecutionVerify.Executions.Skip(3).First().Should().Be(("AddCustomerDummyAfterEvent1Handler", true));
-            TestExecutionVerify.Executions.Skip(4).First().Should().Be(("AddCustomerDummyPreEvent1Handler", false));
-            TestExecutionVerify.Executions.Skip(5).First().Should().Be(("AddCustomerDummyPreEvent2Handler", false));
-            TestExecutionVerify.Executions.Skip(6).First().Should().Be(("HandlerFallback", false));
-            TestExecutionVerify.Executions.Skip(7).First().Should().Be(("AddCustomerDummyAfterEvent1Handler", false));
+            TestExecutionVerify.Executions.Skip(4).First().Should().Be(("AddCustomerDummyAfterEvent1HandlerFallback", false));
+            TestExecutionVerify.Executions.Skip(5).First().Should().Be(("HandlerFallback", false));
+            TestExecutionVerify.Executions.Skip(6).First().Should().Be(("AddCustomerDummyPreEvent2HandlerFallback", false));
+            TestExecutionVerify.Executions.Skip(7).First().Should().Be(("AddCustomerDummyPreEvent1HandlerFallback", false));
+
 
         }
         finally

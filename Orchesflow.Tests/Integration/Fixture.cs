@@ -18,6 +18,7 @@ namespace Orchesflow.Tests.Integration
             using (var scope = application.Services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+                context.Database.ExecuteSqlRaw("DROP TABLE Customer");
                 context.Database.Migrate();
             }
         }

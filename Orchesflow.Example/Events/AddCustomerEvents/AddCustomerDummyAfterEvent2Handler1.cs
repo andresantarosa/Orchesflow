@@ -26,6 +26,6 @@ public class AddCustomerDummyAfterEvent2Handler1 : IFallbackable, INotificationH
     
     public async Task Fallback()
     {
-        TestExecutionVerify.Executions.Add(("AddCustomerDummyAfterEvent2Handler", false));
+        TestExecutionVerify.Executions.Add(("AddCustomerDummyAfterEvent2HandlerFallback", false));
     }
 }

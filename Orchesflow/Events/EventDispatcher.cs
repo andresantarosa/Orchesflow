@@ -59,6 +59,7 @@ namespace Orchesflow.Events
 
         public async Task FirePreCommitFallbacks()
         {
+            _preCommitFallbacks.Reverse();
             foreach (var fallback in _preCommitFallbacks)
                 await fallback.Fallback();
         }
@@ -94,6 +95,7 @@ namespace Orchesflow.Events
 
         public async Task FireAfterCommitFallbacks()
         {
+            _afterCommitFallbacks.Reverse();
             foreach (var fallback in _afterCommitFallbacks)
                 await fallback.Fallback();
         }
@@ -103,8 +105,9 @@ namespace Orchesflow.Events
         {
             var notificationType = typeof(INotificationHandler<>).MakeGenericType(notification.GetType());
             var notifications = _serviceProvider.GetServices(notificationType);
-            return notifications
+            var fallbackEvents = notifications
                 .OfType<IFallbackable>().ToList();
+            return fallbackEvents;
         }
     }
 }

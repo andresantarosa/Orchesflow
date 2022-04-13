@@ -58,10 +58,10 @@ namespace Orchesflow.Orchestration
 
                 if (_domainNotifications.HasNotifications())
                 {
-                    await _eventDispatcher.FirePreCommitFallbacks();
+                    await _eventDispatcher.FireAfterCommitFallbacks();
                     if (handler is IFallbackable)
                         await ((IFallbackable) handler).Fallback();
-                    await _eventDispatcher.FireAfterCommitFallbacks();
+                    await _eventDispatcher.FirePreCommitFallbacks();
                     return GetRequestResultForFailure();
                 }
 
