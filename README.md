@@ -8,36 +8,31 @@ This package provides some extra tools to be used along MediatR + EntityFramewor
 
 ### Using Ochesflow
 To enable Orchesflow just add it to your `ConfigureServices()` method at `Startup.cs`
-
-    services.AddOrchesflow<YourDbContext>();
-
+````csharp
+services.AddOrchesflow<YourDbContext>();
+````
 #### Sending a Command or Query
+````csharp
+using Orchesflow.Orchestration
 
-    using Orchesflow.Orchestration
-    
-    public class MyController
-    {
-       private readonly IOrchestrator _orchestrator;
-       
-       public MyController(IOrchestrator orchestrator)
-       {
-           _orchestrator = orchestrator
-       }
-       
-       public async Task<IActionResult>([FromBody] MyCommand command)
-       {
-           // Use SendCommand to send a command
-           // A command triggers PreCommitEvents, Database commit and AfterCommitEvents
-           // For Queries the method SendQuery() should be used
-           // SendQuery() does not trigger events nor database commit
-           var response = await _orchestrator.SendCommand(command);
-           if(respose.Success)
-              return Ok(response.Data);
-           else
-              return BadRequest(response.Messages);
-       }
-    }
+public class MyController {
+  private readonly IOrchestrator _orchestrator;
 
+  public MyController(IOrchestrator orchestrator) {
+    _orchestrator = orchestrator
+  }
+
+  public async Task < IActionResult > ([FromBody] MyCommand command) {
+    // Use SendCommand to send a command
+    // A command triggers PreCommitEvents, Database commit and AfterCommitEvents
+    // For Queries the method SendQuery() should be used
+    // SendQuery() does not trigger events nor database commit
+    var response = await _orchestrator.SendCommand(command);
+    if (respose.Success) return Ok(response.Data);
+    else return BadRequest(response.Messages);
+  }
+}
+````
 #### EventDispatcher
 ### EventDispatcher
 The event dispatcher is the responsible to dispatch PreCommitEvents and AfterCommitEvents. This interface (`IEventDispatcher`) provides methods to add, remove, list or manualy event trigger (not recommended).
