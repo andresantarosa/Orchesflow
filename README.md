@@ -28,8 +28,10 @@ public class MyController {
     // For Queries the method SendQuery() should be used
     // SendQuery() does not trigger events nor database commit
     var response = await _orchestrator.SendCommand(command);
-    if (respose.Success) return Ok(response.Data);
-    else return BadRequest(response.Messages);
+    if (respose.Success) 
+       return Ok(response.Data);
+    else
+       return BadRequest(response.Messages);
   }
 }
 ````
