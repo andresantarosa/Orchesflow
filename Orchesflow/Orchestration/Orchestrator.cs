@@ -33,7 +33,7 @@ namespace Orchesflow.Orchestration
             _fallbacks = new List<IFallbackable>();
         }
 
-        public async Task<RequestResult> SendCommand<TRequest, TResponse>(IRequest<TResponse> request)
+        public async Task<RequestResult<TResponse>> SendCommand<TRequest, TResponse>(IRequest<TResponse> request)
             where TRequest : IRequest<TResponse>
         {
             var handler = _serviceProvider
@@ -47,7 +47,7 @@ namespace Orchesflow.Orchestration
             if (_domainNotifications.HasNotifications())
             {
                 await _eventDispatcher.FirePreCommitFallbacks();
-                return GetRequestResultForFailure();
+                return GetRequestResultForFailure<TResponse>();
 
             }
            
@@ -62,10 +62,10 @@ namespace Orchesflow.Orchestration
                     if (handler is IFallbackable)
                         await ((IFallbackable) handler).Fallback();
                     await _eventDispatcher.FirePreCommitFallbacks();
-                    return GetRequestResultForFailure();
+                    return GetRequestResultForFailure<TResponse>();
                 }
 
-                return new RequestResult
+                return new RequestResult<TResponse>
                 {
                     Success = true,
                     Data = commandResponse
@@ -73,17 +73,17 @@ namespace Orchesflow.Orchestration
             }
 
             await _eventDispatcher.FirePreCommitFallbacks();
-            return GetRequestResultForFailure();
+            return GetRequestResultForFailure<TResponse>();
         }
-
-        public async Task<RequestResult> SendQuery<T>(IRequest<T> request)
+        
+        public async Task<RequestResult<TResponse>> SendQuery<TResponse>(IRequest<TResponse> request)
         {
             var commandResponse = await _mediator.Send(request);
 
             if (_domainNotifications.HasNotifications())
-                return GetRequestResultForFailure();
+                return GetRequestResultForFailure<TResponse>();
 
-            return new RequestResult
+            return new RequestResult<TResponse>
             {
                 Success = true,
                 Data = commandResponse
@@ -91,8 +91,8 @@ namespace Orchesflow.Orchestration
 
         }
 
-        private RequestResult GetRequestResultForFailure() =>
-            new RequestResult
+        private RequestResult<TResponse> GetRequestResultForFailure<TResponse>() =>
+            new RequestResult<TResponse>
             {
                 Success = false,
                 Messages = _domainNotifications.GetAll()

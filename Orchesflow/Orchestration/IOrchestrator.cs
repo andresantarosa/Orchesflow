@@ -6,8 +6,8 @@ namespace Orchesflow.Orchestration
 {
     public interface IOrchestrator
     {
-        Task<RequestResult> SendCommand<TRequest, TResponse>(IRequest<TResponse> request)
+        Task<RequestResult<TResponse>> SendCommand<TRequest, TResponse>(IRequest<TResponse> request)
             where TRequest : IRequest<TResponse>;
-        Task<RequestResult> SendQuery<T>(IRequest<T> request);
+        Task<RequestResult<TResponse>> SendQuery<TResponse>(IRequest<TResponse> request);
     }
 }

@@ -2,10 +2,10 @@
 
 namespace Orchesflow.Models
 {
-    public class RequestResult
+    public class RequestResult<TResponse>
     {
         public bool Success { get; set; }
         public List<string> Messages { get; set; } = new List<string>();
-        public object Data { get; set; }
+        public TResponse Data { get; set; }
     }
 }
